@@ -60,6 +60,8 @@ Transaction.init(
         model: 'categories',
         key: 'id',
       },
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
     },
     date: {
       type: DataTypes.DATE,
@@ -88,6 +90,8 @@ Transaction.init(
         model: 'budgets',
         key: 'id',
       },
+      onDelete: 'SET NULL',
+      onUpdate: 'CASCADE',
     },
   },
   {

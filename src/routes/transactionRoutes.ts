@@ -5,18 +5,18 @@ const router = Router();
 const transactionController = new TransactionController();
 
 // Create a new transaction
-router.post('/', transactionController.create);
+router.post('/create', transactionController.create);
 
 // Get all transactions with optional filters
-router.get('/', transactionController.getAll);
+router.get('/get', transactionController.getAll);
 
 // Get a single transaction by ID
-router.get('/:id', transactionController.getById);
+router.get('/get/:id', transactionController.getById);
 
 // Update a transaction
-router.put('/:id', transactionController.update);
+router.put('/update/:id', transactionController.update);
 
 // Delete a transaction
-router.delete('/:id', transactionController.delete);
+router.delete('/delete/:id', transactionController.delete);
 
 export default router; 

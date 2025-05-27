@@ -5,18 +5,18 @@ const router = Router();
 const categoryController = new CategoryController();
 
 // Create a new category
-router.post('/', categoryController.create);
+router.post('/create', categoryController.create);
 
 // Get all categories with optional filters
-router.get('/', categoryController.getAll);
+router.get('/get', categoryController.getAll);
 
 // Get a single category by ID
-router.get('/:id', categoryController.getById);
+router.get('/get/:id', categoryController.getById);
 
 // Update a category
-router.put('/:id', categoryController.update);
+router.put('/update/:id', categoryController.update);
 
 // Delete a category
-router.delete('/:id', categoryController.delete);
+router.delete('/delete/:id', categoryController.delete);
 
 export default router; 

@@ -55,6 +55,12 @@ Budget.init(
       type: DataTypes.UUID,
       allowNull: false,
       field: 'category_id',
+      references: {
+        model: 'categories',
+        key: 'id',
+      },
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
     },
     startDate: {
       type: DataTypes.DATE,

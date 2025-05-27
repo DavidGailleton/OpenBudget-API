@@ -5,18 +5,18 @@ const router = Router();
 const budgetController = new BudgetController();
 
 // Create a new budget
-router.post('/', budgetController.create);
+router.post('/create', budgetController.create);
 
 // Get all budgets with optional filters
-router.get('/', budgetController.getAll);
+router.get('/get', budgetController.getAll);
 
 // Get a single budget by ID
-router.get('/:id', budgetController.getById);
+router.get('/get/:id', budgetController.getById);
 
 // Update a budget
-router.put('/:id', budgetController.update);
+router.put('/update/:id', budgetController.update);
 
 // Delete a budget
-router.delete('/:id', budgetController.delete);
+router.delete('/delete/:id', budgetController.delete);
 
 export default router; 
