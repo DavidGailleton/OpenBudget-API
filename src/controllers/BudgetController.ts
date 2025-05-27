@@ -47,11 +47,8 @@ export class BudgetController {
       const where: any = {};
       if (type) where.type = type;
       if (categoryId) where.categoryId = categoryId;
-      if (startDate || endDate) {
-        where.startDate = {};
-        if (startDate) where.startDate.$gte = new Date(startDate as string);
-        if (endDate) where.endDate.$lte = new Date(endDate as string);
-      }
+      if (startDate) where.startDate = { $gte: new Date(startDate as string) };
+      if (endDate) where.endDate = { $lte: new Date(endDate as string) };
 
       const budgets = await Budget.findAll({
         where,
