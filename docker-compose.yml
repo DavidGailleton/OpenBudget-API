@@ -1,0 +1,42 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ${NODE_ENV:-development} === 'production' ? 'Dockerfile' : 'Dockerfile.dev'
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - PORT=3000
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=openbudget
+    depends_on:
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - openbudget-network
+
+  db:
+    image: postgres:17-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=openbudget
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - openbudget-network
+
+volumes:
+  postgres_data:
+
+networks:
+  openbudget-network:
+    driver: bridge 
