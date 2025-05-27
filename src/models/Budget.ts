@@ -16,7 +16,7 @@ interface BudgetAttributes {
 }
 
 class Budget extends Model<BudgetAttributes> implements BudgetAttributes {
-  public id!: string;
+  public id?: string;
   public name!: string;
   public amount!: number;
   public description!: string;
