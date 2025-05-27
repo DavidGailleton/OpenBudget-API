@@ -1,10 +1,18 @@
-import { Request, Response } from 'express';
+import { Request, Response, RequestHandler } from 'express';
 import { Category, Transaction } from '../models';
 import { TransactionType } from '../types/TransactionType';
 
 export class CategoryController {
+  constructor() {
+    this.create = this.create.bind(this);
+    this.getAll = this.getAll.bind(this);
+    this.getById = this.getById.bind(this);
+    this.update = this.update.bind(this);
+    this.delete = this.delete.bind(this);
+  }
+
   // Create a new category
-  async create(req: Request, res: Response) {
+  create: RequestHandler = async (req, res) => {
     try {
       const { name, type, description, icon, color } = req.body;
 
@@ -16,14 +24,14 @@ export class CategoryController {
         color,
       });
 
-      return res.status(201).json(category);
+      res.status(201).json(category);
     } catch (error: any) {
-      return res.status(400).json({ error: error.message });
+      res.status(400).json({ error: error.message });
     }
   }
 
   // Get all categories with optional filters
-  async getAll(req: Request, res: Response) {
+  getAll: RequestHandler = async (req, res) => {
     try {
       const { type } = req.query;
 
@@ -41,14 +49,14 @@ export class CategoryController {
         ],
       });
 
-      return res.json(categories);
+      res.json(categories);
     } catch (error: any) {
-      return res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
 
   // Get a single category by ID
-  async getById(req: Request, res: Response) {
+  getById: RequestHandler = async (req, res) => {
     try {
       const { id } = req.params;
 
@@ -63,17 +71,18 @@ export class CategoryController {
       });
 
       if (!category) {
-        return res.status(404).json({ error: 'Category not found' });
+        res.status(404).json({ error: 'Category not found' });
+        return;
       }
 
-      return res.json(category);
+      res.json(category);
     } catch (error: any) {
-      return res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
 
   // Update a category
-  async update(req: Request, res: Response) {
+  update: RequestHandler = async (req, res) => {
     try {
       const { id } = req.params;
       const { name, type, description, icon, color } = req.body;
@@ -81,7 +90,8 @@ export class CategoryController {
       const category = await Category.findByPk(id);
 
       if (!category) {
-        return res.status(404).json({ error: 'Category not found' });
+        res.status(404).json({ error: 'Category not found' });
+        return;
       }
 
       await category.update({
@@ -92,28 +102,29 @@ export class CategoryController {
         color,
       });
 
-      return res.json(category);
+      res.json(category);
     } catch (error: any) {
-      return res.status(400).json({ error: error.message });
+      res.status(400).json({ error: error.message });
     }
   }
 
   // Delete a category
-  async delete(req: Request, res: Response) {
+  delete: RequestHandler = async (req, res) => {
     try {
       const { id } = req.params;
 
       const category = await Category.findByPk(id);
 
       if (!category) {
-        return res.status(404).json({ error: 'Category not found' });
+        res.status(404).json({ error: 'Category not found' });
+        return;
       }
 
       await category.destroy();
 
-      return res.status(204).send();
+      res.status(204).send();
     } catch (error: any) {
-      return res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
 } 

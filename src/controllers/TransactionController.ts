@@ -1,10 +1,18 @@
-import { Request, Response } from 'express';
+import { Request, Response, RequestHandler } from 'express';
 import { Transaction, Category, Budget } from '../models';
 import { TransactionType } from '../types/TransactionType';
 
 export class TransactionController {
+  constructor() {
+    this.create = this.create.bind(this);
+    this.getAll = this.getAll.bind(this);
+    this.getById = this.getById.bind(this);
+    this.update = this.update.bind(this);
+    this.delete = this.delete.bind(this);
+  }
+
   // Create a new transaction
-  async create(req: Request, res: Response) {
+  create: RequestHandler = async (req, res) => {
     try {
       const {
         type,
@@ -35,14 +43,14 @@ export class TransactionController {
         ],
       });
 
-      return res.status(201).json(transactionWithRelations);
+      res.status(201).json(transactionWithRelations);
     } catch (error: any) {
-      return res.status(400).json({ error: error.message });
+      res.status(400).json({ error: error.message });
     }
   }
 
   // Get all transactions with optional filters
-  async getAll(req: Request, res: Response) {
+  getAll: RequestHandler = async (req, res) => {
     try {
       const {
         type,
@@ -74,14 +82,14 @@ export class TransactionController {
         order: [['date', 'DESC']],
       });
 
-      return res.json(transactions);
+      res.json(transactions);
     } catch (error: any) {
-      return res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
 
   // Get a single transaction by ID
-  async getById(req: Request, res: Response) {
+  getById: RequestHandler = async (req, res) => {
     try {
       const { id } = req.params;
 
@@ -93,17 +101,18 @@ export class TransactionController {
       });
 
       if (!transaction) {
-        return res.status(404).json({ error: 'Transaction not found' });
+        res.status(404).json({ error: 'Transaction not found' });
+        return;
       }
 
-      return res.json(transaction);
+      res.json(transaction);
     } catch (error: any) {
-      return res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
 
   // Update a transaction
-  async update(req: Request, res: Response) {
+  update: RequestHandler = async (req, res) => {
     try {
       const { id } = req.params;
       const {
@@ -120,7 +129,8 @@ export class TransactionController {
       const transaction = await Transaction.findByPk(id);
 
       if (!transaction) {
-        return res.status(404).json({ error: 'Transaction not found' });
+        res.status(404).json({ error: 'Transaction not found' });
+        return;
       }
 
       await transaction.update({
@@ -141,28 +151,29 @@ export class TransactionController {
         ],
       });
 
-      return res.json(updatedTransaction);
+      res.json(updatedTransaction);
     } catch (error: any) {
-      return res.status(400).json({ error: error.message });
+      res.status(400).json({ error: error.message });
     }
   }
 
   // Delete a transaction
-  async delete(req: Request, res: Response) {
+  delete: RequestHandler = async (req, res) => {
     try {
       const { id } = req.params;
 
       const transaction = await Transaction.findByPk(id);
 
       if (!transaction) {
-        return res.status(404).json({ error: 'Transaction not found' });
+        res.status(404).json({ error: 'Transaction not found' });
+        return;
       }
 
       await transaction.destroy();
 
-      return res.status(204).send();
+      res.status(204).send();
     } catch (error: any) {
-      return res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
 } 

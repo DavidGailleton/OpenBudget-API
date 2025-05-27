@@ -1,10 +1,18 @@
-import { Request, Response } from 'express';
+import { Request, Response, RequestHandler } from 'express';
 import { Budget, Category, Transaction } from '../models';
 import { TransactionType } from '../types/TransactionType';
 
 export class BudgetController {
+  constructor() {
+    this.create = this.create.bind(this);
+    this.getAll = this.getAll.bind(this);
+    this.getById = this.getById.bind(this);
+    this.update = this.update.bind(this);
+    this.delete = this.delete.bind(this);
+  }
+
   // Create a new budget
-  async create(req: Request, res: Response) {
+  create: RequestHandler = async (req, res) => {
     try {
       const { name, amount, description, type, categoryId, startDate, endDate } = req.body;
 
@@ -25,14 +33,14 @@ export class BudgetController {
         ],
       });
 
-      return res.status(201).json(budgetWithRelations);
+      res.status(201).json(budgetWithRelations);
     } catch (error: any) {
-      return res.status(400).json({ error: error.message });
+      res.status(400).json({ error: error.message });
     }
   }
 
   // Get all budgets with optional filters
-  async getAll(req: Request, res: Response) {
+  getAll: RequestHandler = async (req, res) => {
     try {
       const { type, categoryId, startDate, endDate } = req.query;
 
@@ -54,14 +62,14 @@ export class BudgetController {
         order: [['startDate', 'DESC']],
       });
 
-      return res.json(budgets);
+      res.json(budgets);
     } catch (error: any) {
-      return res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
 
   // Get a single budget by ID
-  async getById(req: Request, res: Response) {
+  getById: RequestHandler = async (req, res) => {
     try {
       const { id } = req.params;
 
@@ -73,17 +81,18 @@ export class BudgetController {
       });
 
       if (!budget) {
-        return res.status(404).json({ error: 'Budget not found' });
+        res.status(404).json({ error: 'Budget not found' });
+        return;
       }
 
-      return res.json(budget);
+      res.json(budget);
     } catch (error: any) {
-      return res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
 
   // Update a budget
-  async update(req: Request, res: Response) {
+  update: RequestHandler = async (req, res) => {
     try {
       const { id } = req.params;
       const { name, amount, description, type, categoryId, startDate, endDate } = req.body;
@@ -91,7 +100,8 @@ export class BudgetController {
       const budget = await Budget.findByPk(id);
 
       if (!budget) {
-        return res.status(404).json({ error: 'Budget not found' });
+        res.status(404).json({ error: 'Budget not found' });
+        return;
       }
 
       await budget.update({
@@ -111,28 +121,29 @@ export class BudgetController {
         ],
       });
 
-      return res.json(updatedBudget);
+      res.json(updatedBudget);
     } catch (error: any) {
-      return res.status(400).json({ error: error.message });
+      res.status(400).json({ error: error.message });
     }
   }
 
   // Delete a budget
-  async delete(req: Request, res: Response) {
+  delete: RequestHandler = async (req, res) => {
     try {
       const { id } = req.params;
 
       const budget = await Budget.findByPk(id);
 
       if (!budget) {
-        return res.status(404).json({ error: 'Budget not found' });
+        res.status(404).json({ error: 'Budget not found' });
+        return;
       }
 
       await budget.destroy();
 
-      return res.status(204).send();
+      res.status(204).send();
     } catch (error: any) {
-      return res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
 } 
