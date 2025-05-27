@@ -3,7 +3,7 @@ import sequelize from '../config/database';
 import { TransactionType } from '../types/TransactionType';
 
 interface BudgetAttributes {
-  id: string;
+  id?: string;
   name: string;
   amount: number;
   description?: string;
