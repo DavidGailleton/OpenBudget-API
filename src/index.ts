@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import sequelize from './config/database';
 import './models'; // This will initialize all models and their relationships
 import transactionRoutes from './routes/transactionRoutes';
+import categoryRoutes from './routes/categoryRoutes';
+import budgetRoutes from './routes/budgetRoutes';
 
 // Load environment variables
 dotenv.config();
@@ -19,6 +21,8 @@ app.use(express.json());
 
 // Routes
 app.use('/api/transactions', transactionRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/budgets', budgetRoutes);
 
 // Basic route
 app.get('/', (req, res) => {

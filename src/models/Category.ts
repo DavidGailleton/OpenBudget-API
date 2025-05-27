@@ -3,7 +3,7 @@ import sequelize from '../config/database';
 import { TransactionType } from '../types/TransactionType';
 
 interface CategoryAttributes {
-  id: string;
+  id?: string;
   name: string;
   type: TransactionType;
   description?: string;

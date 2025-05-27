@@ -54,14 +54,17 @@ Budget.init(
     categoryId: {
       type: DataTypes.UUID,
       allowNull: false,
+      field: 'category_id',
     },
     startDate: {
       type: DataTypes.DATE,
       allowNull: false,
+      field: 'start_date',
     },
     endDate: {
       type: DataTypes.DATE,
       allowNull: false,
+      field: 'end_date',
     },
   },
   {

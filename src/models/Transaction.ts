@@ -55,6 +55,7 @@ Transaction.init(
     categoryId: {
       type: DataTypes.UUID,
       allowNull: false,
+      field: 'category_id',
       references: {
         model: 'categories',
         key: 'id',
@@ -69,10 +70,12 @@ Transaction.init(
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
+      field: 'is_recurring',
     },
     recurringFrequency: {
       type: DataTypes.STRING,
       allowNull: true,
+      field: 'recurring_frequency',
       validate: {
         isIn: [['DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY']],
       },
@@ -80,6 +83,7 @@ Transaction.init(
     budgetId: {
       type: DataTypes.UUID,
       allowNull: true,
+      field: 'budget_id',
       references: {
         model: 'budgets',
         key: 'id',
@@ -98,7 +102,7 @@ Transaction.init(
         fields: ['type'],
       },
       {
-        fields: ['categoryId'],
+        fields: ['category_id'],
       },
     ],
   }
