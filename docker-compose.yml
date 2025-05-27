@@ -2,11 +2,11 @@ services:
   api:
     build:
       context: .
-      dockerfile: ${NODE_ENV:-development} === 'production' ? 'Dockerfile' : 'Dockerfile.dev'
+      dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=${NODE_ENV:-development}
+      - NODE_ENV=development
       - PORT=3000
       - DB_HOST=db
       - DB_PORT=5432
